@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://bowser-sprite-Sheet.png" type="Texture" id=1]
+[ext_resource path="res://punch-out-road.png" type="Texture" id=2]
+[ext_resource path="res://punch-out-posts+calzada.png" type="Texture" id=3]
+[ext_resource path="res://new-york-back-drop.png" type="Texture" id=4]
+[ext_resource path="res://punch-out-m-water.png" type="Texture" id=5]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 16 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=4]
+resource_name = "scroll"
+length = 30.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 197, 194 ), Vector2( 13, 194 ) ]
+}
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="water middle" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 1.5, 1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/water middle"]
+position = Vector2( -768, 151 )
+texture = ExtResource( 5 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 7 )
+
+[node name="posts" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 2, 1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/posts"]
+position = Vector2( -768, 158 )
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 54 )
+
+[node name="ny" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[node name="New-york-back-drop" type="Sprite" parent="ParallaxBackground/ny"]
+position = Vector2( -184, 23 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 36, 226 )
+texture = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 197, 194 )
+frames = SubResource( 3 )
+animation = "walk"
+playing = true
+
+[node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
+position = Vector2( -196, -194 )
+anchor_mode = 0
+current = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "scroll"
+anims/scroll = SubResource( 4 )
