@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://bowser-sprite-Sheet.png" type="Texture" id=1]
 [ext_resource path="res://punch-out-road.png" type="Texture" id=2]
 [ext_resource path="res://punch-out-posts+calzada.png" type="Texture" id=3]
 [ext_resource path="res://new-york-back-drop.png" type="Texture" id=4]
 [ext_resource path="res://punch-out-m-water.png" type="Texture" id=5]
+[ext_resource path="res://chicago-back-drop.png" type="Texture" id=6]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -22,9 +23,48 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite/Camera2D:current")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("startCamera:current")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("startCamera:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=4]
 resource_name = "scroll"
-length = 30.0
+length = 35.0
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:position")
@@ -33,10 +73,46 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 30 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 3, 30, 35 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 197, 194 ), Vector2( 13, 194 ) ]
+"values": [ Vector2( 272, 194 ), Vector2( 197, 194 ), Vector2( 13, 194 ), Vector2( -203, 194 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite/Camera2D:current")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3, 30 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("startCamera:current")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 3, 30 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("startCamera:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 3, 30, 32 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( -183, 0 ), Vector2( -183, 0 ) ]
 }
 
 [node name="Node2D" type="Node2D"]
@@ -63,11 +139,16 @@ centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 1024, 54 )
 
-[node name="ny" type="ParallaxLayer" parent="ParallaxBackground"]
+[node name="backdrop" type="ParallaxLayer" parent="ParallaxBackground"]
 
-[node name="New-york-back-drop" type="Sprite" parent="ParallaxBackground/ny"]
+[node name="ny" type="Sprite" parent="ParallaxBackground/backdrop"]
 position = Vector2( -184, 23 )
 texture = ExtResource( 4 )
+centered = false
+
+[node name="chicago" type="Sprite" parent="ParallaxBackground/backdrop"]
+position = Vector2( -184, 23 )
+texture = ExtResource( 6 )
 centered = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -78,7 +159,7 @@ position = Vector2( 36, 226 )
 texture = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 197, 194 )
+position = Vector2( -203, 194 )
 frames = SubResource( 3 )
 animation = "walk"
 playing = true
@@ -86,8 +167,12 @@ playing = true
 [node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
 position = Vector2( -196, -194 )
 anchor_mode = 0
-current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "scroll"
+anims/RESET = SubResource( 5 )
 anims/scroll = SubResource( 4 )
+
+[node name="startCamera" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
